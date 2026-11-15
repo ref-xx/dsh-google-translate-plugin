@@ -50,42 +50,6 @@ git clone https://github.com/ref-xx/dsh-google-translate-plugin.git
 
 Then open **Plugins > Add plugin** and select the cloned directory or specify its absolute path. Keep this directory in place while DSH uses the linked installation. No separate compilation or manual dependency installation is needed; DSH manages package installation automatically.
 
-## Preview a prompt
-
-Workflow:
-
-1. Compose a message in the standard composer.
-2. Click **Translate & preview** below the text area.
-3. Review the English translation and make any necessary edits. The original draft remains visible in the dialog for comparison.
-4. Click **Send English** to submit the finalized text directly, without a second translation pass.
-5. Alternatively, click **Cancel — keep Turkish draft** or press **Escape** to return to the original draft without sending any message to the model.
-
-**The default Send button and standard keyboard shortcuts bypass the preview and submit the original draft unchanged.** Use the dedicated preview button whenever translation is needed. Inputs submitted via other clients or headless sessions are not automatically translated.
-
-Confirmation queues an ordinary follow-up message rather than steering an active step. Once confirmed, DSH handles sending progress and error handling. If a send attempt fails, the composer retains the edited English text and attachments for retry; canceling a preview cannot retract an already submitted message.
-
-## Translate a response into Turkish
-
-Click the **Translate response to Turkish** icon located alongside the completed response's Copy, Like/Dislike, and Branch actions. Prior to generating a new translation, a dialog clarifies that text will be transmitted to Google and prompts for confirmation (**Translate response to Turkish**).
-
-Once translated, options include viewing the result, clicking **Copy Turkish**, or closing the dialog to return to the original response. The standard Copy button continues to copy the original response text. A successful translation can be reopened without initiating a new request as long as its action component remains mounted.
-
-Translated responses remain decoupled from the active conversation: the original response and model history are never altered. Model reasoning tokens and tool arguments are excluded from translation. The output is provided as selectable plain Markdown text rather than replacing DSH's built-in renderer.
-
-This action is accessible wherever DSH exposes its completed-response action bar—typically on the final text response of a turn. Interrupted responses that persist with a final message ID can also be translated; transient outputs and intermediate steps may not display the action.
-
-## Drafts, references and attachments
-
-Important operational considerations and limitations:
-
-- Previews leave the active draft and attachments untouched until confirmed. Canceling mid-translation aborts the request, preventing late results from overwriting the draft.
-- Structured reference chips are not supported because updating their text via the public composer API cannot preserve their metadata. Remove these chips or use standard Send instead.
-- Literal file paths and plain-text references are protected on a best-effort basis, along with fenced/inline code, indented blocks, URLs, standard Markdown link destinations, and line breaks.
-- Confirming a preview converts quoted selections into plain Markdown. The full quote text is preserved, though quote-chip metadata is discarded.
-- Attachments remain managed by the native composer. Ensure file uploads complete before confirming. If sending fails, DSH preserves the edited draft for retry.
-- If the draft, attachments, or session state change during review, confirmation is blocked to prevent overwriting newer input. Cancel and re-translate the updated draft.
-- Slash-command drafts, empty English previews, and translated outputs starting with `/` are rejected to prevent accidental command execution.
-
 ## Privacy and reliability
 
 This plugin relies on an **unofficial Google Translate web endpoint**, not the official Google Cloud Translation API. As such, it may encounter rate limits, service disruptions, or unannounced API format changes. The host machine running DSH must have direct network access to Google.
