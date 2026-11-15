@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Google input translator",
+    "description": "I use Translate & preview below the composer to review and edit an English version of my prompt before sending it. Send English submits my final edit unchanged; Cancel or Escape keeps my original draft and attachments. Normal Send skips translation. The response translate icon opens a Turkish translation without changing the original reply or model history. Requested prose goes to Google's unofficial endpoint; no API key is required. I do not use it for secrets. Structured reference-chip drafts are refused, and confirmed quoted selections become plain Markdown. Disable in Plugins to remove the controls."
+  }
+}

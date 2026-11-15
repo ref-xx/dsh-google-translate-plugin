@@ -1,0 +1,9 @@
+- insert:
+    - id: local-google-input-translator
+      name: '@local/dsh-google-input-translator'
+      config:
+        sourceLanguage: auto
+        timeoutMs: 15000
+        totalTimeoutMs: 60000
+        maxInputChars: 24000
+        maxChunkChars: 3000

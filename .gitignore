@@ -1,0 +1,20 @@
+# This is an installation-only repository. Ignore everything by default.
+/*
+
+# Runtime, installation metadata, documentation, and license.
+!/.gitignore
+!/package.json
+!/cordis.patch.yml
+!/index.js
+!/plugin.js
+!/google.js
+!/text.js
+!/client.js
+!/icon.svg
+!/README.md
+!/LICENSE
+!/locale/
+
+# Keep only the English plugin metadata.
+/locale/*
+!/locale/en.json
