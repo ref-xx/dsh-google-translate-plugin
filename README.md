@@ -1,105 +1,106 @@
 # DSH Google Translate
 
-I made this plugin so I can review an English version of my prompt before I send it to a model. I can edit the translation, send my final wording, or cancel and keep my original draft. I also added a response action for reading English replies in Turkish.
+I made this plugin so I can review an English version of my prompt before I send it to a model. 
 
 The interface and documentation are in English. Translation does not require a Google account or API key.
 
+
 ## Requirements
 
-I currently target **DeepSeek Harness 0.2.2-rc.3**. The package accepts DSH versions matching `>=0.2.2-rc.3 <0.3.0`, but I do not assume that future changes to its plugin APIs will be compatible.
+This plugin targets **DeepSeek Harness 0.2.2-rc.3**. The package accepts DSH versions matching `>=0.2.2-rc.3 <0.3.0`, though future compatibility across plugin API changes is not guaranteed.
 
-I use this with the browser-based DSH GUI and its Plugins page. The Host needs Node.js **24.9.0 or newer**, network access to Google, and the package manager required by the DSH installation. Installing directly from this repository also requires Git to be available to DSH.
+It is designed for use with the browser-based DSH GUI and its Plugins page. The Host requires Node.js **24.9.0 or newer**, network access to Google, and the package manager required by the DSH installation. Installing directly from this repository also requires Git to be available to DSH.
 
-This repository includes the ready-to-load browser module. **There is no build step**, and I do not run `npm install` inside a DSH profile directory.
+This repository includes the pre-built, ready-to-load browser module. **There is no build step**, and running `npm install` inside a DSH profile directory is not required.
 
 ## Install from GitHub
 
-I recommend installing through DSH's plugin manager:
+The recommended installation method is via DSH's plugin manager:
 
 1. Open **Plugins** in DSH.
-2. Choose **Add plugin**.
-3. Paste this package source:
+2. Select **Add plugin**.
+3. Paste the following package source:
 
    ```text
    git+https://github.com/ref-xx/dsh-google-translate-plugin.git#main
    ```
 
-4. Complete the installation and enable **Google input translator** if it is not already enabled.
-5. Follow the installer's status. If it requests a restart, restart DSH; then refresh the existing GUI page.
+4. Complete the installation and enable **Google input translator** if it is not enabled automatically.
+5. Follow the installer prompt. If a restart is requested, restart DSH and refresh the GUI page.
 
-The `main` branch can change. For a repeatable installation, I replace `main` in the source above with a reviewed, full 40-character commit hash.
+> **Note:** The `main` branch can change over time. For a reproducible installation, replace `main` in the source above with a full 40-character commit hash.
 
 ### CLI alternative
 
-If `dsh` is on my PATH and I use the `web` profile, I can install the same bundle with:
+If `dsh` is in the system PATH and using the `web` profile, install the bundle using:
 
 ```sh
 dsh plugin --profile web add "git+https://github.com/ref-xx/dsh-google-translate-plugin.git#main"
 ```
 
-I replace `web` with the profile I actually use. This changes that profile, not just the current conversation.
+Replace `web` with the target profile. This modifies that specific profile rather than just the active session.
 
 ### Local-directory alternative
 
-I can also clone the repository:
+Alternatively, clone the repository locally:
 
 ```sh
 git clone https://github.com/ref-xx/dsh-google-translate-plugin.git
 ```
 
-Then I open **Plugins > Add plugin** and select the cloned directory, or enter its absolute path. I keep that directory in place while DSH uses a linked installation. No separate compilation or manual dependency installation is needed; DSH handles package installation.
+Then open **Plugins > Add plugin** and select the cloned directory or specify its absolute path. Keep this directory in place while DSH uses the linked installation. No separate compilation or manual dependency installation is needed; DSH manages package installation automatically.
 
 ## Preview a prompt
 
-My input flow is:
+Workflow:
 
-1. Write a message in the normal composer.
-2. Click **Translate & preview** below it.
-3. Review the English translation and edit it as needed. The original draft is available in the dialog for comparison.
-4. Click **Send English** to submit exactly the edited text, without another translation pass.
-5. Or choose **Cancel — keep Turkish draft**, or press **Escape**, to return to the original draft without sending anything to the model.
+1. Compose a message in the standard composer.
+2. Click **Translate & preview** below the text area.
+3. Review the English translation and make any necessary edits. The original draft remains visible in the dialog for comparison.
+4. Click **Send English** to submit the finalized text directly, without a second translation pass.
+5. Alternatively, click **Cancel — keep Turkish draft** or press **Escape** to return to the original draft without sending any message to the model.
 
-**The normal Send button and normal submission shortcuts do not open the preview. They send the original draft unchanged.** I use the explicit preview button whenever I want translation first. Inputs from other clients or headless sessions are not automatically translated.
+**The default Send button and standard keyboard shortcuts bypass the preview and submit the original draft unchanged.** Use the dedicated preview button whenever translation is needed. Inputs submitted via other clients or headless sessions are not automatically translated.
 
-Confirmation queues an ordinary follow-up rather than steering a running step. After I confirm, DSH owns send progress and errors. If the send fails, the composer keeps my edited English text and attachments for retry; canceling a preview cannot retract a submitted message.
+Confirmation queues an ordinary follow-up message rather than steering an active step. Once confirmed, DSH handles sending progress and error handling. If a send attempt fails, the composer retains the edited English text and attachments for retry; canceling a preview cannot retract an already submitted message.
 
 ## Translate a response into Turkish
 
-I click the **Translate response to Turkish** icon alongside the completed response's Copy, Like/Dislike and Branch actions. Before a new translation, the dialog explains that text will go to Google and asks me to confirm **Translate response to Turkish**.
+Click the **Translate response to Turkish** icon located alongside the completed response's Copy, Like/Dislike, and Branch actions. Prior to generating a new translation, a dialog clarifies that text will be transmitted to Google and prompts for confirmation (**Translate response to Turkish**).
 
-I can read the result, choose **Copy Turkish**, or close the dialog to return to the original response. The standard Copy action still copies the original reply. A successful translation can be reopened without another request while its action component remains mounted.
+Once translated, options include viewing the result, clicking **Copy Turkish**, or closing the dialog to return to the original response. The standard Copy button continues to copy the original response text. A successful translation can be reopened without initiating a new request as long as its action component remains mounted.
 
-I keep translated responses separate from the conversation: the original reply and the model's history are not rewritten. Reasoning and tool arguments are not translated. The result is selectable plain Markdown text, not a replacement for DSH's response renderer.
+Translated responses remain decoupled from the active conversation: the original response and model history are never altered. Model reasoning tokens and tool arguments are excluded from translation. The output is provided as selectable plain Markdown text rather than replacing DSH's built-in renderer.
 
-The action is available where DSH exposes its completed-response action bar, usually on the last text-bearing reply in a turn. Durable interrupted replies can be translated if they have a final message ID; transient output and intermediate steps may not have the action.
+This action is accessible wherever DSH exposes its completed-response action bar—typically on the final text response of a turn. Interrupted responses that persist with a final message ID can also be translated; transient outputs and intermediate steps may not display the action.
 
 ## Drafts, references and attachments
 
-I keep these limitations in mind:
+Important operational considerations and limitations:
 
-- Preview leaves the resident draft and attachments untouched until I confirm. Canceling during translation aborts the request, and late results cannot overwrite the draft.
-- Structured reference chips are refused because replacing their text through the public composer API cannot preserve their metadata. I remove those chips or use normal Send instead.
-- Literal paths and references typed as ordinary text are protected on a best-effort basis, along with fenced/inline code, indented code, URLs, common Markdown link destinations and line breaks.
-- Confirming a preview flattens quoted selections into ordinary Markdown. Their full text is retained, but their quote-chip metadata is not.
-- Attachments remain under the original composer's ownership. I wait for file uploads to finish before confirming. If a native send fails, DSH retains the edited draft for retry.
-- If the draft, attachments or session change while I am reviewing, confirmation is refused instead of overwriting newer input. I cancel and translate the current draft again.
-- Slash-command drafts, empty English previews and English previews starting with `/` are refused so that translation cannot accidentally execute a command.
+- Previews leave the active draft and attachments untouched until confirmed. Canceling mid-translation aborts the request, preventing late results from overwriting the draft.
+- Structured reference chips are not supported because updating their text via the public composer API cannot preserve their metadata. Remove these chips or use standard Send instead.
+- Literal file paths and plain-text references are protected on a best-effort basis, along with fenced/inline code, indented blocks, URLs, standard Markdown link destinations, and line breaks.
+- Confirming a preview converts quoted selections into plain Markdown. The full quote text is preserved, though quote-chip metadata is discarded.
+- Attachments remain managed by the native composer. Ensure file uploads complete before confirming. If sending fails, DSH preserves the edited draft for retry.
+- If the draft, attachments, or session state change during review, confirmation is blocked to prevent overwriting newer input. Cancel and re-translate the updated draft.
+- Slash-command drafts, empty English previews, and translated outputs starting with `/` are rejected to prevent accidental command execution.
 
 ## Privacy and reliability
 
-I use an **unofficial Google Translate browser endpoint**, not the supported Google Cloud Translation API. It may rate-limit, stop working, or change its response format without notice. Google access must work from the machine running the DSH Host.
+This plugin relies on an **unofficial Google Translate web endpoint**, not the official Google Cloud Translation API. As such, it may encounter rate limits, service disruptions, or unannounced API format changes. The host machine running DSH must have direct network access to Google.
 
-Requested prose is sent in a POST body to `https://translate.googleapis.com/translate_a/single`. Even English prose is sent if I ask to translate it. Code and path protection is **not secret detection or redaction**, so I do not use this plugin for sensitive material I would not send to Google.
+Submitted text is transmitted via POST requests to `https://translate.googleapis.com/translate_a/single`. Code and path preservation mechanisms are **not intended for secret detection or redaction**; this plugin should not be used with sensitive or confidential data that cannot be shared with Google.
 
-The plugin does not store credentials, log submitted text, follow HTTP redirects, automatically retry, or fall back to another provider. Preview and response-translation requests do not append plugin records or send model messages. My original draft still follows DSH's own draft-persistence behavior, and an explicitly submitted message becomes ordinary conversation history.
+The plugin does not store credentials, log submitted content, follow HTTP redirects, automatically retry failed requests, or provide fallback providers. Translation requests do not persist plugin-specific records or inject model prompts. Original drafts adhere to DSH's native persistence behavior, and confirmed messages enter regular conversation history.
 
-There is also a `google_translate_text` agent tool that calls the same translation service for text I approve for transmission. It cannot confirm a preview, send a chat message, or rewrite history. If a model calls the tool, the normal tool call and result are part of its conversation history.
+An optional `google_translate_text` agent tool provides translation capabilities for approved content within agent turns. This tool cannot confirm previews, trigger chat messages, or modify history. Any agent tool execution and its output become standard parts of conversation context.
 
-Translation is fallible. I review names, identifiers, formatting and meaning before sending. If a request fails or times out, the original remains available and I can cancel or explicitly try again.
+Automated translation is inherently imperfect. Always verify proper nouns, technical identifiers, formatting, and semantic accuracy before submitting. If a request fails or times out, the original text is preserved for cancellation or retry.
 
 ## Configuration
 
-I leave the defaults in place unless I need different limits:
+Default settings are suitable for most use cases, but can be customized as needed:
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
@@ -111,20 +112,20 @@ I leave the defaults in place unless I need different limits:
 
 The preview target is always English. Response translation uses English as the source and Turkish as the target. Long prose is split into sequential requests, and each provider response is limited to 1 MiB.
 
-For persistent changes, I use DSH's plugin configuration facilities for this plugin row rather than editing unrelated profile entries. The package's bundle patch documents the initial defaults; editing a cloned package alone does not reload an already cached Host module.
+To persist configuration changes, use DSH's plugin settings interface for this entry rather than modifying unrelated profile files. Default values are defined in the package's bundle patch; modifying local package files directly will not invalidate or reload a cached Host module.
 
 ## Update or remove
 
-I use the Plugins page to disable or remove **Google input translator**. Disabling removes its controls and cancels active translations; it does not undo messages I have already sent.
+Use the Plugins page to disable or uninstall **Google input translator**. Disabling the plugin removes its interface controls and terminates active translation requests without altering previously sent messages.
 
-If DSH reports that the package is already installed when I install another revision, I remove the old bundle first and install the reviewed revision again. I follow any restart instruction and refresh the GUI afterward. I avoid enabling a second copy at the same time because both copies would claim the same translation service and UI slots.
+If DSH indicates that the package is already installed when updating to a different revision, uninstall the existing bundle before reinstalling the new version. Complete any requested restarts and refresh the web GUI. Avoid enabling multiple instances concurrently, as conflicting instances will contest the same translation services and UI hooks.
 
-## What I include here
+## Package Contents
 
-I keep this repository installation-only: the Host modules, ready-to-load browser module, bundle patch, package manifest, English display metadata, icon and license. Tests, build tooling, development sources, local configuration, credentials and generated logs are intentionally excluded.
+This repository is packaged strictly for runtime installation and includes: Host modules, pre-built browser assets, the bundle patch, package manifest, English display metadata, icon, and license. Test suites, build tooling, source files, local configs, credentials, and generated logs are omitted.
 
-The translation logic and Host integration have automated coverage, and both translation directions have been exercised against Google with synthetic text. Automated checks do not establish the rendered appearance or browser interaction of the dialogs on every DSH installation.
+The core translation logic and Host integration include automated test coverage, with both translation directions validated against Google using synthetic test cases. However, automated tests do not guarantee identical visual rendering or browser behavior across all DSH environments.
 
 ## License
 
-I share this plugin under the MIT license included in this repository. It is an independent plugin, not an official Google or DeepSeek product.
+Distributed under the MIT License. See the repository license file for details. This is an independent open-source plugin and is not affiliated with or endorsed by Google or DeepSeek.
